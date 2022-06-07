@@ -18,6 +18,14 @@ public class EntityDeath implements Listener {
             return;
 
         LivingEntity killedEnt = event.getEntity();
+
+        if(killedEnt instanceof Player) {
+            if(killedEnt.getUniqueId().equals(killer.getUniqueId())) {
+                PlayerStatsManager.addSuicideStat(killer.getUniqueId());
+                return;
+            }
+        }
+
         EntityDamageEvent cause = killedEnt.getLastDamageCause();
         if(cause != null) {
             boolean usedWeapon = switch (cause.getCause()) {
@@ -31,7 +39,7 @@ public class EntityDeath implements Listener {
                 weapon = w.getType() == Material.AIR ? "hand" : w.getType().toString();
             }
 
-            PlayerStatsManager.addStat(killer.getUniqueId(), killedEnt.getType().toString(), cause.getCause().toString(), weapon, cause.getFinalDamage());
+            PlayerStatsManager.addKilledEntStat(killer.getUniqueId(), killedEnt.getType().toString(), cause.getCause().toString(), weapon, cause.getFinalDamage());
         }
     }
 }

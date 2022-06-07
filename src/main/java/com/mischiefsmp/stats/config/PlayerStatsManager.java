@@ -11,7 +11,11 @@ import java.util.logging.Level;
 public class PlayerStatsManager {
     private static HashMap<UUID, PlayerStats> stats = new HashMap<>();
 
-    public static void addStat(UUID player, String entity, String cause, String weapon, double finalDamage) {
+    public static void addSuicideStat(UUID player) {
+
+    }
+
+    public static void addKilledEntStat(UUID player, String entity, String cause, String weapon, double finalDamage) {
         if(Utils.containsStringIgnoreCase(PluginConfig.getDisabledWeapons(), weapon))
             return;
         if(Utils.containsStringIgnoreCase(PluginConfig.getDisabledCauses(), cause))
