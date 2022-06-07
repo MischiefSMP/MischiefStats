@@ -26,4 +26,9 @@ public class PluginConfig {
     public static List<String> getDisabledWeapons() {
         return fc.getStringList("disabled-weapons");
     }
+
+    public static List<String> getDisabledCauses() {
+        return fc.getStringList("disabled-causes");
+    }
+
 }

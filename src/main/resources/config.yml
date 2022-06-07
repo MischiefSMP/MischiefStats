@@ -1,5 +1,8 @@
 language: "en"
-disabled-weapons: ["wooden_axe"]
 languages:
   - "en"
   - "de"
+#eg: wooden_axe
+disabled-weapons: ["wooden_axe"]
+#eg: splash_potion
+disabled-causes: []
