@@ -1,5 +1,7 @@
 package com.mischiefsmp.stats.events;
 
+import com.mischiefsmp.stats.config.PlayerStatsManager;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,13 +19,19 @@ public class EntityDeath implements Listener {
 
         LivingEntity killedEnt = event.getEntity();
         EntityDamageEvent cause = killedEnt.getLastDamageCause();
-        ItemStack weapon = null;
         if(cause != null) {
-            double finalDamage = cause.getFinalDamage();
-            if(cause.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK || cause.getCause() == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
-                weapon = killer.getInventory().getItemInMainHand();
-            }
-        }
+            boolean usedWeapon = switch (cause.getCause()) {
+                case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK, PROJECTILE, MAGIC -> true;
+                default -> false;
+            };
 
+            String weapon = null;
+            if(usedWeapon) {
+                ItemStack w = killer.getInventory().getItemInMainHand();
+                weapon = w.getType() == Material.AIR ? "hand" : w.getType().toString();
+            }
+
+            PlayerStatsManager.addStat(killer.getUniqueId(), killedEnt.getType().toString(), cause.getCause().toString(), weapon, cause.getFinalDamage());
+        }
     }
 }
