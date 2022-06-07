@@ -22,4 +22,8 @@ public class PluginConfig {
     public static List<String> getLanguages() {
         return fc.getStringList("languages");
     }
+
+    public static List<String> getDisabledWeapons() {
+        return fc.getStringList("disabled-weapons");
+    }
 }

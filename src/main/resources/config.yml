@@ -1,4 +1,5 @@
 language: "en"
+disabled-weapons: ["wooden_axe"]
 languages:
   - "en"
   - "de"
