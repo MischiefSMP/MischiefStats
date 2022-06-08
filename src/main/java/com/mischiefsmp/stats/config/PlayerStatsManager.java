@@ -24,6 +24,7 @@ public class PlayerStatsManager {
         save();
     }
 
+    //if entity is player write it down separately
     public static void addKilledEntStat(UUID player, String entity, String cause, String weapon, double finalDamage) {
         ensurePlayerStat(player);
 
@@ -34,7 +35,6 @@ public class PlayerStatsManager {
 
         //TODO: remove before release
         MischiefStats.getLogManager().logF("Adding stat for player %s, killed entity %s, cause %s with weapon %s", Level.INFO, Bukkit.getPlayer(player).getName(), entity, cause, weapon, finalDamage);
-
     }
 
     //TODO: Save every x minutes

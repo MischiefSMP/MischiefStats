@@ -1,0 +1,8 @@
+playerKills: 0
+playerDeaths: 0
+deaths: 0
+suicides: 0
+totalDamage: 0
+mostDamage: 0
+killedMobs: []
+usedWeapons: []

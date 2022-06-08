@@ -15,7 +15,7 @@ public class PlayerStats extends ConfigFile {
     private int suicides;
 
     public PlayerStats(Plugin plugin, UUID uuid) {
-        super(plugin, String.format("players/%s.yml", uuid.toString()), null);
+        super(plugin, String.format("players/%s.yml", uuid.toString()), "playertemplate.yml");
         ConfigManager.init(this);
     }
 
