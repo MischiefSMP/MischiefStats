@@ -23,6 +23,9 @@ public class PluginConfig extends ConfigFile {
     @ConfigValue(path = "disabled-causes")
     private ArrayList<String> disabledCauses;
 
+    @ConfigValue(path = "allowCreative")
+    private boolean allowCreative;
+
     public PluginConfig(Plugin plugin) {
         super(plugin, "config.yml", "config.yml");
         ConfigManager.init(this);

@@ -39,19 +39,22 @@ public class PlayerStatsManager {
 
     public static void kdEvent(Player killed, Player killer, EntityDamageEvent cause, ItemStack weapon) {
         ensurePlayerStat(killed, killer);
-        if(!Utils.checkIfAllowed(weapon, cause))
+        if(!Utils.checkIfAllowed(null, weapon, cause))
             return;
 
-        PlayerStats killedStats = allStats.get(killed.getUniqueId());
-        PlayerStats killerStats = allStats.get(killer.getUniqueId());
+        if(Utils.checkIfAllowedCreative(killed)) {
+            PlayerStats killedStats = allStats.get(killed.getUniqueId());
+            killedStats.addPlayerDeath();
+            killedStats.addDeath();
+        }
 
-        killedStats.addPlayerDeath();
-        killedStats.addDeath();
-
-        killerStats.addPlayerKill();
-        killerStats.addUsedCause(cause);
-        killerStats.addUsedWeapon(weapon);
-        killerStats.addMostDamage(cause.getFinalDamage());
+        if(Utils.checkIfAllowedCreative(killer)) {
+            PlayerStats killerStats = allStats.get(killer.getUniqueId());
+            killerStats.addPlayerKill();
+            killerStats.addUsedCause(cause);
+            killerStats.addUsedWeapon(weapon);
+            killerStats.addMostDamage(cause.getFinalDamage());
+        }
 
         save();
     }
@@ -59,7 +62,7 @@ public class PlayerStatsManager {
     //if entity is player write it down separately
     public static void addKilledEntStat(Player player, LivingEntity entity, EntityDamageEvent cause, ItemStack weapon) {
         ensurePlayerStat(player);
-        if(!Utils.checkIfAllowed(weapon, cause))
+        if(!Utils.checkIfAllowed(player, weapon, cause))
             return;
 
         PlayerStats stats = allStats.get(player.getUniqueId());

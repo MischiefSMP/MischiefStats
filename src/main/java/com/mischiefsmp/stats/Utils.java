@@ -1,5 +1,7 @@
 package com.mischiefsmp.stats;
 
+import com.mischiefsmp.core.MischiefCore;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -35,16 +37,32 @@ public class Utils {
         };
     }
 
-    public static boolean checkIfAllowed(ItemStack weapon, EntityDamageEvent cause) {
-        return !checkIfAllowedWeapon(weapon) || !checkIfAllowedCause(cause);
+    public static boolean checkIfAllowed(Player player, ItemStack weapon, EntityDamageEvent cause) {
+        return checkIfAllowedCreative(player) || checkIfAllowedWeapon(weapon) || checkIfAllowedCause(cause);
     }
 
     public static boolean checkIfAllowedWeapon(ItemStack weapon) {
+        if(weapon == null)
+            return true;
+
         return Utils.containsStringIgnoreCase(MischiefStats.getPluginConfig().getDisabledWeapons(), weaponToString(weapon));
     }
 
     public static boolean checkIfAllowedCause(EntityDamageEvent cause) {
+        if(cause == null)
+            return true;
+
         return Utils.containsStringIgnoreCase(MischiefStats.getPluginConfig().getDisabledCauses(), damageCauseToString(cause));
+    }
+
+    public static boolean checkIfAllowedCreative(Player player) {
+        if(player == null)
+            return true;
+
+        if(player.getGameMode() == GameMode.CREATIVE) {
+            return MischiefStats.getPluginConfig().isAllowCreative();
+        }
+        return true;
     }
 
     public static String livingEntityToString(LivingEntity ent) {

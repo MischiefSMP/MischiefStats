@@ -6,3 +6,5 @@ languages:
 disabled-weapons: ["wooden_axe"]
 #eg: splash_potion
 disabled-causes: []
+#Track stats if tracked person is in creative?
+allowCreative: false
