@@ -7,3 +7,4 @@ mostDamage: 0
 killedMobs: {}
 usedWeapons: {}
 usedCauses: {}
+deathCauses: {}

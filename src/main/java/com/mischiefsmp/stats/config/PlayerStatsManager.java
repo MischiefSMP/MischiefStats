@@ -39,9 +39,10 @@ public class PlayerStatsManager {
         save();
     }
 
-    public static void addNonPlayerDeath(Player player) {
+    public static void addNonPlayerDeath(Player player, EntityDamageEvent cause) {
         ensurePlayerStat(player);
         allStats.get(player.getUniqueId()).addDeath();
+        allStats.get(player.getUniqueId()).addDeathCause(cause);
         save();
     }
 

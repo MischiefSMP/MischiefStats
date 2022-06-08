@@ -17,7 +17,7 @@ public class PlayerDeath implements Listener {
         Player killer = event.getEntity().getKiller();
 
         if(killer == null) {
-            PlayerStatsManager.addNonPlayerDeath(killed);
+            PlayerStatsManager.addNonPlayerDeath(killed, event.getEntity().getLastDamageCause());
             return;
         }
 

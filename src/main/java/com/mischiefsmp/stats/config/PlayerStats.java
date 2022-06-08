@@ -43,6 +43,9 @@ public class PlayerStats extends ConfigFile {
     @ConfigValue(path = "usedCauses")
     private final Map<String, Integer> usedCauses = new HashMap<>();
 
+    @ConfigValue(path = "deathCauses")
+    private final Map<String, Integer> deathCauses = new HashMap<>();
+
     public PlayerStats(Plugin plugin, UUID uuid) {
         super(plugin, String.format("players/%s.yml", uuid.toString()), "playertemplate.yml");
         ConfigManager.init(this);
@@ -83,6 +86,10 @@ public class PlayerStats extends ConfigFile {
 
     public void addUsedCause(EntityDamageEvent cause) {
         increaseInHashMap(usedCauses, Utils.damageCauseToString(cause));
+    }
+
+    public void addDeathCause(EntityDamageEvent cause) {
+        increaseInHashMap(deathCauses, Utils.damageCauseToString(cause));
     }
 
     private void increaseInHashMap(Map<String, Integer> map, String index) {
