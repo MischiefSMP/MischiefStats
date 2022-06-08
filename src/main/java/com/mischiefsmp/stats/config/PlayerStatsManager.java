@@ -32,7 +32,8 @@ public class PlayerStatsManager {
 
     public static void kdEvent(Player killed, Player killer, EntityDamageEvent cause, ItemStack weapon) {
         ensurePlayerStat(killed, killer);
-        Utils.checkIfAllowed(weapon, cause);
+        if(!Utils.checkIfAllowed(weapon, cause))
+            return;
 
         PlayerStats killedStats = allStats.get(killed.getUniqueId());
         PlayerStats killerStats = allStats.get(killer.getUniqueId());
@@ -51,12 +52,13 @@ public class PlayerStatsManager {
     //if entity is player write it down separately
     public static void addKilledEntStat(Player player, LivingEntity entity, EntityDamageEvent cause, ItemStack weapon) {
         ensurePlayerStat(player);
-        Utils.checkIfAllowed(weapon, cause);
+        if(!Utils.checkIfAllowed(weapon, cause))
+            return;
 
         PlayerStats stats = allStats.get(player.getUniqueId());
         stats.addKilledMob(entity);
         stats.addUsedCause(cause);
-        stats.addUsedWeapon(weapon);
+        stats.addUsedWeapon(Utils.getIfWeaponCause(weapon, cause));
         stats.addMostDamage(cause.getFinalDamage());
 
         save();

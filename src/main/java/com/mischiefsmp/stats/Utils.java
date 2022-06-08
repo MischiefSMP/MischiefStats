@@ -16,6 +16,13 @@ public class Utils {
         return false;
     }
 
+    public static ItemStack getIfWeaponCause(ItemStack stack, EntityDamageEvent cause) {
+        if(stack == null)
+            return null;
+
+        return Utils.isWeaponCause(cause) ? stack : null;
+    }
+
     public static boolean isWeaponCause(EntityDamageEvent cause) {
         return switch (cause.getCause()) {
             case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK, PROJECTILE, MAGIC -> true;
