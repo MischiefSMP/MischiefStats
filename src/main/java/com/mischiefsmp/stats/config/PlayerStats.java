@@ -31,10 +31,13 @@ public class PlayerStats extends ConfigFile {
     private double mostDamage;
 
     @ConfigValue(path = "killedMobs")
-    private Map<String, Integer> killedMobs = new HashMap<>();
+    private final Map<String, Integer> killedMobs = new HashMap<>();
 
     @ConfigValue(path = "usedWeapons")
-    private Map<String, Integer> usedWeapons = new HashMap<>();
+    private final Map<String, Integer> usedWeapons = new HashMap<>();
+
+    @ConfigValue(path = "usedCauses")
+    private final Map<String, Integer> usedCauses = new HashMap<>();
 
     public PlayerStats(Plugin plugin, UUID uuid) {
         super(plugin, String.format("players/%s.yml", uuid.toString()), "playertemplate.yml");
@@ -66,7 +69,7 @@ public class PlayerStats extends ConfigFile {
             mostDamage = damage;
     }
 
-    public void addKilledMobs(String entity) {
+    public void addKilledMob(String entity) {
         if(killedMobs.containsKey(entity)) {
             int current = killedMobs.get(entity) + 1;
             killedMobs.put(entity, current);
@@ -82,5 +85,14 @@ public class PlayerStats extends ConfigFile {
             return;
         }
         usedWeapons.put(weapon, 1);
+    }
+
+    public void addUsedCause(String cause) {
+        if(usedCauses.containsKey(cause)) {
+            int current = usedCauses.get(cause) + 1;
+            usedCauses.put(cause, current);
+            return;
+        }
+        usedCauses.put(cause, 1);
     }
 }
