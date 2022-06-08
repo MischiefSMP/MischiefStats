@@ -18,8 +18,8 @@ public class EntityDeath implements Listener {
 
         LivingEntity killedEnt = event.getEntity();
 
-        if(killedEnt instanceof Player) {
-            if(killedEnt.getUniqueId().equals(killer.getUniqueId())) {
+        if(killedEnt instanceof Player killedPlayer) {
+            if(killedPlayer.getUniqueId().equals(killer.getUniqueId())) {
                 PlayerStatsManager.addSuicideStat(killer);
                 return;
             }
@@ -33,6 +33,7 @@ public class EntityDeath implements Listener {
             };
 
             ItemStack weapon = usedWeapon ? killer.getInventory().getItemInMainHand() : null;
+            //IMPORTANT: If "killedEnt" is a player, that is counted as a player kill in addKilledEntStat
             PlayerStatsManager.addKilledEntStat(killer, killedEnt, cause, weapon);
         }
     }
