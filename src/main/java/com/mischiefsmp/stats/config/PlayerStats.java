@@ -3,7 +3,11 @@ package com.mischiefsmp.stats.config;
 import com.mischiefsmp.core.config.ConfigFile;
 import com.mischiefsmp.core.config.ConfigManager;
 import com.mischiefsmp.core.config.ConfigValue;
+import com.mischiefsmp.stats.Utils;
 import lombok.Getter;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -69,39 +73,27 @@ public class PlayerStats extends ConfigFile {
             mostDamage = damage;
     }
 
-    public void addKilledMob(String entity) {
-        if(entity == null)
-            return;
-
-        if(killedMobs.containsKey(entity)) {
-            int current = killedMobs.get(entity) + 1;
-            killedMobs.put(entity, current);
-            return;
-        }
-        killedMobs.put(entity, 1);
+    public void addKilledMob(LivingEntity entity) {
+        increaseInHashMap(killedMobs, Utils.livingEntityToString(entity));
     }
 
-    public void addUsedWeapon(String weapon) {
-        if(weapon == null)
-            return;
-
-        if(usedWeapons.containsKey(weapon)) {
-            int current = usedWeapons.get(weapon) + 1;
-            usedWeapons.put(weapon, current);
-            return;
-        }
-        usedWeapons.put(weapon, 1);
+    public void addUsedWeapon(ItemStack weapon) {
+        increaseInHashMap(usedWeapons, Utils.weaponToString(weapon));
     }
 
-    public void addUsedCause(String cause) {
-        if(cause == null)
+    public void addUsedCause(EntityDamageEvent cause) {
+        increaseInHashMap(usedCauses, Utils.damageCauseToString(cause));
+    }
+
+    private void increaseInHashMap(Map<String, Integer> map, String index) {
+        if(index == null)
             return;
 
-        if(usedCauses.containsKey(cause)) {
-            int current = usedCauses.get(cause) + 1;
-            usedCauses.put(cause, current);
+        if(map.containsKey(index)) {
+            int current = map.get(index) + 1;
+            map.put(index, current);
             return;
         }
-        usedCauses.put(cause, 1);
+        map.put(index, 1);
     }
 }

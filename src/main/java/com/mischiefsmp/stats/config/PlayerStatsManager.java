@@ -39,9 +39,9 @@ public class PlayerStatsManager {
             return;
 
         PlayerStats stats = allStats.get(player.getUniqueId());
-        stats.addKilledMob(Utils.livingEntityToString(entity));
-        stats.addUsedCause(Utils.damageCauseToString(cause));
-        stats.addUsedWeapon(Utils.weaponToString(weapon));
+        stats.addKilledMob(entity);
+        stats.addUsedCause(cause);
+        stats.addUsedWeapon(weapon);
         stats.addMostDamage(cause.getFinalDamage());
 
         save();
