@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class EntityDeath implements Listener {
@@ -33,13 +34,15 @@ public class EntityDeath implements Listener {
                 default -> false;
             };
 
-            String weapon = null;
+            String weaponString = null;
             if(usedWeapon) {
                 ItemStack w = killer.getInventory().getItemInMainHand();
-                weapon = w.getType() == Material.AIR ? "hand" : w.getType().toString();
+                weaponString = w.getType() == Material.AIR ? "hand" : w.getType().toString().toLowerCase();
             }
 
-            PlayerStatsManager.addKilledEntStat(killer.getUniqueId(), killedEnt.getType().toString(), cause.getCause().toString(), weapon, cause.getFinalDamage());
+            String entityString = killedEnt.getType().toString().toLowerCase();
+            String causeString = cause.getCause().toString().toLowerCase();
+            PlayerStatsManager.addKilledEntStat(killer.getUniqueId(), entityString, causeString, weaponString, cause.getFinalDamage());
         }
     }
 }
