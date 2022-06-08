@@ -40,22 +40,18 @@ public class Utils {
         };
     }
 
-    public static boolean checkIfAllowed(Player player, ItemStack weapon, EntityDamageEvent cause) {
-        return checkIfAllowedCreative(player) || checkIfAllowedWeapon(weapon) || checkIfAllowedCause(cause);
-    }
-
     public static boolean checkIfAllowedWeapon(ItemStack weapon) {
         if(weapon == null)
             return true;
 
-        return Utils.containsStringIgnoreCase(MischiefStats.getPluginConfig().getDisabledWeapons(), weaponToString(weapon));
+        return !Utils.containsStringIgnoreCase(MischiefStats.getPluginConfig().getDisabledWeapons(), weaponToString(weapon));
     }
 
     public static boolean checkIfAllowedCause(EntityDamageEvent cause) {
         if(cause == null)
             return true;
 
-        return Utils.containsStringIgnoreCase(MischiefStats.getPluginConfig().getDisabledCauses(), damageCauseToString(cause));
+        return !Utils.containsStringIgnoreCase(MischiefStats.getPluginConfig().getDisabledCauses(), damageCauseToString(cause));
     }
 
     public static boolean checkIfAllowedCreative(Player player) {
