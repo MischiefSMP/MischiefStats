@@ -1,14 +1,12 @@
 package com.mischiefsmp.stats.events;
 
 import com.mischiefsmp.stats.config.PlayerStatsManager;
-import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class EntityDeath implements Listener {
@@ -22,7 +20,7 @@ public class EntityDeath implements Listener {
 
         if(killedEnt instanceof Player) {
             if(killedEnt.getUniqueId().equals(killer.getUniqueId())) {
-                PlayerStatsManager.addSuicideStat(killer.getUniqueId());
+                PlayerStatsManager.addSuicideStat(killer);
                 return;
             }
         }
@@ -34,15 +32,8 @@ public class EntityDeath implements Listener {
                 default -> false;
             };
 
-            String weaponString = null;
-            if(usedWeapon) {
-                ItemStack w = killer.getInventory().getItemInMainHand();
-                weaponString = w.getType() == Material.AIR ? "hand" : w.getType().toString().toLowerCase();
-            }
-
-            String entityString = killedEnt.getType().toString().toLowerCase();
-            String causeString = cause.getCause().toString().toLowerCase();
-            PlayerStatsManager.addKilledEntStat(killer.getUniqueId(), entityString, causeString, weaponString, cause.getFinalDamage());
+            ItemStack weapon = usedWeapon ? killer.getInventory().getItemInMainHand() : null;
+            PlayerStatsManager.addKilledEntStat(killer, killedEnt, cause, weapon);
         }
     }
 }

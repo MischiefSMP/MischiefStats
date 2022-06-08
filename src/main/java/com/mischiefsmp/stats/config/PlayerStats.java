@@ -70,6 +70,9 @@ public class PlayerStats extends ConfigFile {
     }
 
     public void addKilledMob(String entity) {
+        if(entity == null)
+            return;
+
         if(killedMobs.containsKey(entity)) {
             int current = killedMobs.get(entity) + 1;
             killedMobs.put(entity, current);
@@ -79,6 +82,9 @@ public class PlayerStats extends ConfigFile {
     }
 
     public void addUsedWeapon(String weapon) {
+        if(weapon == null)
+            return;
+
         if(usedWeapons.containsKey(weapon)) {
             int current = usedWeapons.get(weapon) + 1;
             usedWeapons.put(weapon, current);
@@ -88,6 +94,9 @@ public class PlayerStats extends ConfigFile {
     }
 
     public void addUsedCause(String cause) {
+        if(cause == null)
+            return;
+
         if(usedCauses.containsKey(cause)) {
             int current = usedCauses.get(cause) + 1;
             usedCauses.put(cause, current);
