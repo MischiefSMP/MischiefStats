@@ -3,6 +3,7 @@ package com.mischiefsmp.stats;
 import com.mischiefsmp.core.LangManager;
 import com.mischiefsmp.core.LogManager;
 import com.mischiefsmp.stats.config.PluginConfig;
+import com.mischiefsmp.stats.events.EntityDamage;
 import com.mischiefsmp.stats.events.EntityDeath;
 import com.mischiefsmp.stats.events.PlayerDeath;
 import lombok.Getter;
@@ -27,5 +28,6 @@ public class MischiefStats extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new EntityDeath(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
+        getServer().getPluginManager().registerEvents(new EntityDamage(), this);
     }
 }

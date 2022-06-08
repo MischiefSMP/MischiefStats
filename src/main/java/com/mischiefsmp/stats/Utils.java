@@ -26,6 +26,10 @@ public class Utils {
         return Utils.isWeaponCause(cause) ? stack : null;
     }
 
+    public static boolean isPlayer(Object obj) {
+        return obj instanceof Player;
+    }
+
     public static ItemStack getWeapon(Player player) {
         return player.getInventory().getItemInMainHand();
     }

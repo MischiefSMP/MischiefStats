@@ -23,6 +23,14 @@ public class PlayerStatsManager {
         }
     }
 
+    public static void addTotalDamage(Player player, Double damage) {
+        ensurePlayerStat(player);
+        if (Utils.checkIfAllowedCreative(player)) {
+            allStats.get(player.getUniqueId()).addTotalDamage(damage);
+        }
+        save();
+    }
+
     //"player" committed suicide
     public static void addSuicideStat(Player player) {
         ensurePlayerStat(player);
