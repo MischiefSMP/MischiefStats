@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 @Getter
 public class PluginConfig extends ConfigFile {
-
     @ConfigValue(path = "language")
     private String defaultLanguage;
 
