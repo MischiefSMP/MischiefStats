@@ -15,10 +15,11 @@ public class PlayerStatsManager {
     private static final HashMap<UUID, PlayerStats> allStats = new HashMap<>();
     //TODO: create a config for the server, and log total things as well maybe?
 
-    private static void ensurePlayerStat(Player player) {
-        UUID uuid = player.getUniqueId();
-        if(!allStats.containsKey(uuid)) {
-            allStats.put(uuid, new PlayerStats(MischiefStats.getInstance(), uuid));
+    private static void ensurePlayerStat(Player... players) {
+        for(Player player : players) {
+            UUID uuid = player.getUniqueId();
+            if (!allStats.containsKey(uuid))
+                allStats.put(uuid, new PlayerStats(MischiefStats.getInstance(), uuid));
         }
     }
 
@@ -29,32 +30,31 @@ public class PlayerStatsManager {
         save();
     }
 
-    //"player" killed another player, increase that stat
-    public static void addKilledPlayer(Player player) {
-        ensurePlayerStat(player);
-        allStats.get(player.getUniqueId()).addPlayerKill();
-        save();
-    }
+    public static void kdEvent(Player killed, Player killer, EntityDamageEvent cause, ItemStack weapon) {
+        ensurePlayerStat(killed, killer);
+        Utils.checkIfAllowed(weapon, cause);
 
-    //"player" died. Possibly by other player
-    public static void addDeath(Player player, Player killer) {
-        ensurePlayerStat(player);
-        if(killer == null)  allStats.get(player.getUniqueId()).addDeath();
-        else                allStats.get(player.getUniqueId()).addPlayerDeath();
+        PlayerStats killedStats = allStats.get(killed.getUniqueId());
+        PlayerStats killerStats = allStats.get(killer.getUniqueId());
+
+        killedStats.addPlayerDeath();
+        killedStats.addDeath();
+
+        killerStats.addPlayerKill();
+        killerStats.addUsedCause(cause);
+        killerStats.addUsedWeapon(weapon);
+        killerStats.addMostDamage(cause.getFinalDamage());
+
         save();
     }
 
     //if entity is player write it down separately
     public static void addKilledEntStat(Player player, LivingEntity entity, EntityDamageEvent cause, ItemStack weapon) {
         ensurePlayerStat(player);
-
-        //Invalid cause or weapon
-        if(Utils.checkIfAllowedWeapon(weapon) || Utils.checkIfAllowedCause(cause))
-            return;
+        Utils.checkIfAllowed(weapon, cause);
 
         PlayerStats stats = allStats.get(player.getUniqueId());
-        if(entity instanceof Player) addKilledPlayer(player);
-        else stats.addKilledMob(entity);
+        stats.addKilledMob(entity);
         stats.addUsedCause(cause);
         stats.addUsedWeapon(weapon);
         stats.addMostDamage(cause.getFinalDamage());

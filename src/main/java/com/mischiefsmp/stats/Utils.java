@@ -16,6 +16,17 @@ public class Utils {
         return false;
     }
 
+    public static boolean isWeaponCause(EntityDamageEvent cause) {
+        return switch (cause.getCause()) {
+            case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK, PROJECTILE, MAGIC -> true;
+            default -> false;
+        };
+    }
+
+    public static boolean checkIfAllowed(ItemStack weapon, EntityDamageEvent cause) {
+        return checkIfAllowedWeapon(weapon) || checkIfAllowedCause(cause);
+    }
+
     public static boolean checkIfAllowedWeapon(ItemStack weapon) {
         return Utils.containsStringIgnoreCase(MischiefStats.getPluginConfig().getDisabledWeapons(), weaponToString(weapon));
     }

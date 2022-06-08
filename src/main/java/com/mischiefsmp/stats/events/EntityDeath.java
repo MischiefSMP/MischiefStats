@@ -1,5 +1,6 @@
 package com.mischiefsmp.stats.events;
 
+import com.mischiefsmp.stats.Utils;
 import com.mischiefsmp.stats.config.PlayerStatsManager;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,28 +14,16 @@ public class EntityDeath implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         Player killer = event.getEntity().getKiller();
-        if(killer == null)
+        LivingEntity killed = event.getEntity();
+
+        //Triggered in PlayerDeath.java
+        if(killer == null || killed instanceof Player)
             return;
 
-        LivingEntity killedEnt = event.getEntity();
-
-        if(killedEnt instanceof Player killedPlayer) {
-            if(killedPlayer.getUniqueId().equals(killer.getUniqueId())) {
-                PlayerStatsManager.addSuicideStat(killer);
-                return;
-            }
-        }
-
-        EntityDamageEvent cause = killedEnt.getLastDamageCause();
+        EntityDamageEvent cause = killed.getLastDamageCause();
         if(cause != null) {
-            boolean usedWeapon = switch (cause.getCause()) {
-                case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK, PROJECTILE, MAGIC -> true;
-                default -> false;
-            };
-
-            ItemStack weapon = usedWeapon ? killer.getInventory().getItemInMainHand() : null;
-            //IMPORTANT: If "killedEnt" is a player, that is counted as a player kill in addKilledEntStat
-            PlayerStatsManager.addKilledEntStat(killer, killedEnt, cause, weapon);
+            ItemStack weapon = Utils.isWeaponCause(cause) ? killer.getInventory().getItemInMainHand() : null;
+            PlayerStatsManager.addKilledEntStat(killer, killed, cause, killer.getInventory().getItemInMainHand());
         }
     }
 }
