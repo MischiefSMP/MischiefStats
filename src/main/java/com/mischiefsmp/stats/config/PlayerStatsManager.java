@@ -27,6 +27,13 @@ public class PlayerStatsManager {
     public static void addSuicideStat(Player player) {
         ensurePlayerStat(player);
         allStats.get(player.getUniqueId()).addSuicide();
+        allStats.get(player.getUniqueId()).addDeath();
+        save();
+    }
+
+    public static void addNonPlayerDeath(Player player) {
+        ensurePlayerStat(player);
+        allStats.get(player.getUniqueId()).addDeath();
         save();
     }
 

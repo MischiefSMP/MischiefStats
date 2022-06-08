@@ -22,6 +22,6 @@ public class EntityDeath implements Listener {
 
         EntityDamageEvent cause = killed.getLastDamageCause();
         if(cause != null)
-            PlayerStatsManager.addKilledEntStat(killer, killed, cause, killer.getInventory().getItemInMainHand());
+            PlayerStatsManager.addKilledEntStat(killer, killed, cause, Utils.getWeapon(killer));
     }
 }

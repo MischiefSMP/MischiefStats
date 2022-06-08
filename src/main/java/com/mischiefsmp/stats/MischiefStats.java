@@ -4,6 +4,7 @@ import com.mischiefsmp.core.LangManager;
 import com.mischiefsmp.core.LogManager;
 import com.mischiefsmp.stats.config.PluginConfig;
 import com.mischiefsmp.stats.events.EntityDeath;
+import com.mischiefsmp.stats.events.PlayerDeath;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,5 +26,6 @@ public class MischiefStats extends JavaPlugin {
         langManager = new LangManager(this, pluginConfig.getLanguages(), pluginConfig.getDefaultLanguage());
 
         getServer().getPluginManager().registerEvents(new EntityDeath(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
     }
 }

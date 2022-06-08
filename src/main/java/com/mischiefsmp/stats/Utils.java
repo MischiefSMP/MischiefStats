@@ -2,6 +2,7 @@ package com.mischiefsmp.stats;
 
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,6 +24,10 @@ public class Utils {
         return Utils.isWeaponCause(cause) ? stack : null;
     }
 
+    public static ItemStack getWeapon(Player player) {
+        return player.getInventory().getItemInMainHand();
+    }
+
     public static boolean isWeaponCause(EntityDamageEvent cause) {
         return switch (cause.getCause()) {
             case ENTITY_ATTACK, ENTITY_SWEEP_ATTACK, PROJECTILE, MAGIC -> true;
@@ -31,7 +36,7 @@ public class Utils {
     }
 
     public static boolean checkIfAllowed(ItemStack weapon, EntityDamageEvent cause) {
-        return checkIfAllowedWeapon(weapon) || checkIfAllowedCause(cause);
+        return !checkIfAllowedWeapon(weapon) || !checkIfAllowedCause(cause);
     }
 
     public static boolean checkIfAllowedWeapon(ItemStack weapon) {
