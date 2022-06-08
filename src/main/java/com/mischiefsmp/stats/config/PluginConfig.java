@@ -1,34 +1,36 @@
 package com.mischiefsmp.stats.config;
 
-import com.mischiefsmp.core.utils.FileUtils;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.util.FileUtil;
+import com.mischiefsmp.core.config.ConfigFile;
+import com.mischiefsmp.core.config.ConfigManager;
+import com.mischiefsmp.core.config.ConfigValue;
 
+import lombok.Getter;
+import org.bukkit.plugin.Plugin;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PluginConfig {
-    private static FileConfiguration fc;
+public class PluginConfig extends ConfigFile {
 
-    public static void init(Plugin plugin) {
-        fc = FileUtils.loadConfig(plugin, "config.yml");
+    @Getter
+    @ConfigValue(path = "language")
+    private String defaultLanguage;
+
+    @Getter
+    @ConfigValue(path = "languages")
+    private ArrayList<String> languages;
+
+    @Getter
+    @ConfigValue(path = "disabled-weapons")
+    private ArrayList<String> disabledWeapons;
+
+    @Getter
+    @ConfigValue(path = "disabled-causes")
+    private ArrayList<String> disabledCauses;
+
+    public PluginConfig(Plugin plugin) {
+        super(plugin, "config.yml", "config.yml");
+        ConfigManager.init(this);
     }
-
-    public static String getDefaultLanguage() {
-        return fc.getString("language");
-    }
-
-    public static List<String> getLanguages() {
-        return fc.getStringList("languages");
-    }
-
-    public static List<String> getDisabledWeapons() {
-        return fc.getStringList("disabled-weapons");
-    }
-
-    public static List<String> getDisabledCauses() {
-        return fc.getStringList("disabled-causes");
-    }
-
 }

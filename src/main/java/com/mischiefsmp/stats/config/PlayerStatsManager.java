@@ -16,9 +16,9 @@ public class PlayerStatsManager {
     }
 
     public static void addKilledEntStat(UUID player, String entity, String cause, String weapon, double finalDamage) {
-        if(Utils.containsStringIgnoreCase(PluginConfig.getDisabledWeapons(), weapon))
+        if(Utils.containsStringIgnoreCase(MischiefStats.getPluginConfig().getDisabledWeapons(), weapon))
             return;
-        if(Utils.containsStringIgnoreCase(PluginConfig.getDisabledCauses(), cause))
+        if(Utils.containsStringIgnoreCase(MischiefStats.getPluginConfig().getDisabledCauses(), cause))
             return;
 
         //TODO: remove before release
