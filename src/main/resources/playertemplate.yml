@@ -4,5 +4,5 @@ deaths: 0
 suicides: 0
 totalDamage: 0
 mostDamage: 0
-killedMobs: []
-usedWeapons: []
+killedMobs: {}
+usedWeapons: {}
