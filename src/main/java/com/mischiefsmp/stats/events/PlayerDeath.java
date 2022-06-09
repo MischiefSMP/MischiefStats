@@ -21,16 +21,17 @@ public class PlayerDeath implements Listener {
             return;
         }
 
+        EntityDamageEvent cause = killed.getLastDamageCause();
+        if(cause == null)
+            return;
+
         if(killed == killer) {
-            PlayerStatsManager.addSuicideStat(killed);
+            PlayerStatsManager.addSuicideStat(killed, cause);
             return;
         }
 
-        EntityDamageEvent cause = killed.getLastDamageCause();
-        if(cause != null) {
-            ItemStack weapon = Utils.getWeapon(killer);
-            PlayerStatsManager.kdEvent(killed, killer, cause, weapon);
-        }
+        ItemStack weapon = Utils.getWeapon(killer);
+        PlayerStatsManager.kdEvent(killed, killer, cause, weapon);
     }
 
 }

@@ -72,6 +72,28 @@ public class Utils {
         return cause.getCause().toString().toLowerCase();
     }
 
+    public static String capitalizeAll(String string) {
+        char[] charArray = string.toCharArray();
+        boolean foundSpace = true;
+        for(int i = 0; i < charArray.length; i++) {
+            if (Character.isLetter(charArray[i])) {
+                if (foundSpace) {
+                    charArray[i] = Character.toUpperCase(charArray[i]);
+                    foundSpace = false;
+                }
+            } else {
+                foundSpace = true;
+            }
+        }
+        return String.valueOf(charArray);
+    }
+
+    public static String prettyPrint(String string) {
+        string = string.replaceAll("_", " ");
+        string = capitalizeAll(string);
+        return string;
+    }
+
     public static String weaponToString(ItemStack item) {
         return item.getType() == Material.AIR ? "hand" : item.getType().toString().toLowerCase();
     }

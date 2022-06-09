@@ -41,10 +41,11 @@ public class PlayerStatsManager {
     }
 
     //"player" committed suicide
-    public static void addSuicideStat(Player player) {
+    public static void addSuicideStat(Player player, EntityDamageEvent cause) {
         ensurePlayerStat(player);
         allStats.get(player.getUniqueId()).addSuicide();
         allStats.get(player.getUniqueId()).addDeath();
+        allStats.get(player.getUniqueId()).addDeathCause(cause);
         save();
     }
 

@@ -5,6 +5,7 @@ import com.mischiefsmp.core.cmdinfo.CMDInfo;
 import com.mischiefsmp.core.utils.MCUtils;
 import com.mischiefsmp.core.utils.MathUtils;
 import com.mischiefsmp.stats.MischiefStats;
+import com.mischiefsmp.stats.Utils;
 import com.mischiefsmp.stats.config.PlayerStats;
 import com.mischiefsmp.stats.config.PlayerStatsManager;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -69,20 +70,21 @@ public class StatsCommand implements CommandExecutor {
         lm.sendString(requester, "stats-view-totaldmg", String.valueOf(MathUtils.round(stats.getTotalDamage(), 2)));
         lm.sendString(requester, "stats-view-mostdmg", String.valueOf(MathUtils.round(stats.getMostDamage(), 2)));
 
-        String mostUsedWeapon = getMostUsed(stats.getUsedWeapons());
+        String mostUsedWeapon = Utils.prettyPrint(getMostUsed(stats.getUsedWeapons()));
         lm.sendString(requester, "stats-view-mostwpn", mostUsedWeapon);
 
         String mostUsedType = getMostUsed(stats.getUsedCauses());
         lm.sendString(requester, "stats-view-mosttype", mostUsedType);
 
-        String mostKilledBy = getMostUsed(stats.getDeathCauses());
+        String mostKilledBy = Utils.prettyPrint(getMostUsed(stats.getDeathCauses()));
         lm.sendString(requester, "stats-view-mostkilledby", mostKilledBy);
 
         lm.sendString(requester, "stats-view-killedmobs");
 
         Map<String, Integer> killedMobs = stats.getKilledMobs();
         for(String mob : killedMobs.keySet()) {
-            lm.sendString(requester, "stats-view-killedmob", mob, String.valueOf(killedMobs.get(mob)));
+            String mobString = Utils.prettyPrint(mob);
+            lm.sendString(requester, "stats-view-killedmob", mobString, String.valueOf(killedMobs.get(mob)));
         }
     }
 
