@@ -51,6 +51,20 @@ public class StatsCommand implements CommandExecutor {
                 // -> /stats reset
                 if(!isAllowed(sender, "stats.reset-self"))
                     return true;
+
+                if(sender instanceof ConsoleCommandSender) {
+                    sender.sendMessage(lm.getString("no-console"));
+                    return true;
+                }
+
+                PlayerStatsManager.reset(((Player)sender).getUniqueId());
+                lm.sendString(sender, "stats-reset-self");
+                return true;
+            } else if(args[0].equals("help")) {
+                if(!isAllowed(sender, "stats.view-self"))
+                    return true;
+
+                sendHelp(sender);
                 return true;
             } else {
                 // -> /stats <playername>
@@ -75,7 +89,16 @@ public class StatsCommand implements CommandExecutor {
                 return true;
             }
         }
+
+        lm.sendString(sender, "wrong-usage");
         return true;
+    }
+
+    private void sendHelp(CommandSender sender) {
+        lm.sendString(sender, "help-allcmds");
+        for(CMDInfo info : MischiefStats.getCmdInfoManager().getCMDHelp(sender, "stats")) {
+            sender.sendMessage(info.usage());
+        }
     }
 
     private void sendInfo(OfflinePlayer player, String playerName, CommandSender requester) {

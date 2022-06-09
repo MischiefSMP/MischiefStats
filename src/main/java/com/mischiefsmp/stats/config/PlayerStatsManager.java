@@ -92,6 +92,12 @@ public class PlayerStatsManager {
         return allStats.get(uuid);
     }
 
+    public static void reset(UUID uuid) {
+        PlayerStats cfg = allStats.get(uuid);
+        ConfigManager.delete(cfg);
+        allStats.remove(uuid);
+    }
+
     //TODO: Save every x minutes
     public static void save() {
         for(UUID uuid : allStats.keySet()) {
