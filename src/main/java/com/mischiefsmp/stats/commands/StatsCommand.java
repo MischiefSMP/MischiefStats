@@ -13,17 +13,12 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-public class StatsCommand implements CommandExecutor {
+public class StatsCommand implements CommandExecutor, TabCompleter {
     private final HashMap<String, CMDInfo> cmdInfo;
     private final LangManager lm;
 
@@ -116,6 +111,26 @@ public class StatsCommand implements CommandExecutor {
         return true;
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+         List<String> list = new ArrayList<>();
+
+        if(args.length == 1) {
+            if(isAllowed(sender, "stats.reset-others", false) || isAllowed(sender, "stats.reset-self", false))
+                list.add("reset");
+
+            if(isAllowed(sender, "stats.view-others", false))
+                for (Player p : Bukkit.getServer().getOnlinePlayers())
+                    list.add(p.getName());
+        } else if(args.length == 2 && args[0].equals("reset")) {
+            if(isAllowed(sender, "stats.reset-others", false))
+                for (Player p : Bukkit.getServer().getOnlinePlayers())
+                    list.add(p.getName());
+        }
+
+         return list;
+    }
+
     private void sendHelp(CommandSender sender) {
         lm.sendString(sender, "help-allcmds");
         for(CMDInfo info : MischiefStats.getCmdInfoManager().getCMDHelp(sender, "stats")) {
@@ -190,9 +205,16 @@ public class StatsCommand implements CommandExecutor {
         return item;
     }
 
+    private boolean isAllowed(CommandSender sender, String id, boolean printOnDeny) {
+        if(MCUtils.isAllowed(sender, cmdInfo.get(id).permission()))
+            return true;
+        else
+            if(printOnDeny)
+                sender.sendMessage(lm.getString(sender, "no-perm"));
+            return false;
+    }
+
     private boolean isAllowed(CommandSender sender, String id) {
-        if(MCUtils.isAllowed(sender, cmdInfo.get(id).permission())) return true;
-        else sender.sendMessage(lm.getString(sender, "no-perm"));
-        return false;
+        return isAllowed(sender, id, true);
     }
 }
