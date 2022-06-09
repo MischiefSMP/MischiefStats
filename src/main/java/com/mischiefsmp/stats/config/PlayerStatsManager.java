@@ -3,6 +3,8 @@ package com.mischiefsmp.stats.config;
 import com.mischiefsmp.core.config.ConfigManager;
 import com.mischiefsmp.stats.MischiefStats;
 import com.mischiefsmp.stats.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -25,8 +27,10 @@ public class PlayerStatsManager {
 
     private static void ensurePlayerStat(UUID... uuids) {
         for(UUID uuid : uuids) {
-            if (!allStats.containsKey(uuid))
+            boolean hasPlayed = Bukkit.getServer().getPlayer(uuid) != null || Bukkit.getServer().getOfflinePlayer(uuid).hasPlayedBefore();
+            if (!allStats.containsKey(uuid) && hasPlayed) {
                 allStats.put(uuid, new PlayerStats(MischiefStats.getInstance(), uuid));
+            }
         }
     }
 
@@ -93,6 +97,7 @@ public class PlayerStatsManager {
     }
 
     public static PlayerStats getStats(UUID uuid) {
+        ensurePlayerStat(uuid);
         return allStats.get(uuid);
     }
 
