@@ -1,0 +1,18 @@
+commands:
+  stats:
+    view-self:
+      usage: "/stats"
+      permission: "stats.view"
+      default: "true"
+    view-others:
+      usage: "/stats <playername>"
+      permission: "stats.view.others"
+      default: "op"
+    reset:
+      usage: "/stats reset"
+      permission: "stats.reset"
+      default: "op"
+    reset-others:
+      usage: "/stats reset <username>"
+      permission: "stats.reset.others"
+      default: "op"

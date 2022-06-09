@@ -8,16 +8,3 @@ commands:
   stats:
     description: View stats
     usage: /<command>
-permissions:
-  stats.view:
-    description: View your own stats
-    default: true
-  stats.view.others:
-    description: View someone elses stats
-    default: op
-  stats.reset:
-    description: Reset your own stats
-    default: op
-  stats.reset.others:
-    description: Reset someone elses stats
-    default: op
