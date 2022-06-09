@@ -89,6 +89,8 @@ public class Utils {
     }
 
     public static String prettyPrint(String string) {
+        if(string == null)
+            return "None";
         string = string.replaceAll("_", " ");
         string = capitalizeAll(string);
         return string;
