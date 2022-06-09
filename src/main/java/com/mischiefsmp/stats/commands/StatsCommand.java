@@ -120,7 +120,9 @@ public class StatsCommand implements CommandExecutor, TabCompleter {
                     list.add(p.getName());
         }
 
-         return list;
+        int index = args.length - 1;
+        list.removeIf(str -> !Utils.startsWithIgnoreCase(str, args[index]));
+        return list;
     }
 
     private void sendHelp(CommandSender sender) {

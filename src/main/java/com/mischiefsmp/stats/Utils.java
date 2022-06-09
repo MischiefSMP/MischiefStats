@@ -88,6 +88,10 @@ public class Utils {
         return String.valueOf(charArray);
     }
 
+    public static boolean startsWithIgnoreCase(String str1, String str2) {
+        return str1.toLowerCase().startsWith(str2.toLowerCase());
+    }
+
     public static String prettyPrint(String string) {
         if(string == null)
             return "None";
