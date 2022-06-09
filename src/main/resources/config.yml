@@ -8,3 +8,5 @@ disabled-weapons: ["wooden_axe"]
 disabled-causes: []
 #Track stats if tracked person is in creative?
 allowCreative: false
+#In minutes
+saveInterval: 5

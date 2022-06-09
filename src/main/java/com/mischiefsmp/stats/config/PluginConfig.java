@@ -26,6 +26,9 @@ public class PluginConfig extends ConfigFile {
     @ConfigValue(path = "allowCreative")
     private boolean allowCreative;
 
+    @ConfigValue(path = "saveInterval")
+    private int saveInterval;
+
     public PluginConfig(Plugin plugin) {
         super(plugin, "config.yml", "config.yml");
         ConfigManager.init(this);

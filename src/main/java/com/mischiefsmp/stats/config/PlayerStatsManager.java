@@ -4,13 +4,11 @@ import com.mischiefsmp.core.config.ConfigManager;
 import com.mischiefsmp.stats.MischiefStats;
 import com.mischiefsmp.stats.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -40,7 +38,6 @@ public class PlayerStatsManager {
             return;
 
         allStats.get(player.getUniqueId()).addTotalDamage(damage);
-        save();
     }
 
     //"player" committed suicide
@@ -49,14 +46,12 @@ public class PlayerStatsManager {
         allStats.get(player.getUniqueId()).addSuicide();
         allStats.get(player.getUniqueId()).addDeath();
         allStats.get(player.getUniqueId()).addDeathCause(cause);
-        save();
     }
 
     public static void addNonPlayerDeath(Player player, EntityDamageEvent cause) {
         ensurePlayerStat(player);
         allStats.get(player.getUniqueId()).addDeath();
         allStats.get(player.getUniqueId()).addDeathCause(cause);
-        save();
     }
 
     public static void kdEvent(Player killed, Player killer, EntityDamageEvent cause, ItemStack weapon) {
@@ -77,8 +72,6 @@ public class PlayerStatsManager {
             killerStats.addUsedWeapon(weapon);
             killerStats.addMostDamage(cause.getFinalDamage());
         }
-
-        save();
     }
 
     //if entity is player write it down separately
@@ -92,8 +85,6 @@ public class PlayerStatsManager {
         stats.addUsedCause(cause);
         stats.addUsedWeapon(Utils.getIfWeaponCause(weapon, cause));
         stats.addMostDamage(cause.getFinalDamage());
-
-        save();
     }
 
     public static PlayerStats getStats(UUID uuid) {

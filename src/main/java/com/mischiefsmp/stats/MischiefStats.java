@@ -5,6 +5,7 @@ import com.mischiefsmp.core.LogManager;
 import com.mischiefsmp.core.cmdinfo.CMDInfoManager;
 import com.mischiefsmp.core.utils.MCUtils;
 import com.mischiefsmp.stats.commands.StatsCommand;
+import com.mischiefsmp.stats.config.PlayerStatsManager;
 import com.mischiefsmp.stats.config.PluginConfig;
 import com.mischiefsmp.stats.events.EntityDamage;
 import com.mischiefsmp.stats.events.EntityDeath;
@@ -41,6 +42,14 @@ public class MischiefStats extends JavaPlugin {
         registerCommand("stats", new StatsCommand());
 
         MCUtils.registerPermissions(cmdInfoManager);
+
+        int delay = 20 * 60 * pluginConfig.getSaveInterval();
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, PlayerStatsManager::save, delay, delay);
+    }
+
+    @Override
+    public void onDisable() {
+        PlayerStatsManager.save();
     }
 
     private void registerCommand(String name, CommandExecutor exec) {
