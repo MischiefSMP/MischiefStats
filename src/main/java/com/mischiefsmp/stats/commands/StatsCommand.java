@@ -122,6 +122,11 @@ public class StatsCommand implements CommandExecutor {
         lm.sendString(requester, "stats-view-killedmobs");
 
         Map<String, Integer> killedMobs = stats.getKilledMobs();
+        if(killedMobs.keySet().size() == 0) {
+            lm.sendString(requester, "stats-view-killedmobs-none");
+            return;
+        }
+
         for(String mob : killedMobs.keySet()) {
             String mobString = Utils.prettyPrint(mob);
             lm.sendString(requester, "stats-view-killedmob", mobString, String.valueOf(killedMobs.get(mob)));
