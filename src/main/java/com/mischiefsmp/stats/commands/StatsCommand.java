@@ -73,7 +73,7 @@ public class StatsCommand implements CommandExecutor {
         String mostUsedWeapon = Utils.prettyPrint(getMostUsed(stats.getUsedWeapons()));
         lm.sendString(requester, "stats-view-mostwpn", mostUsedWeapon);
 
-        String mostUsedType = getMostUsed(stats.getUsedCauses());
+        String mostUsedType = Utils.prettyPrint(getMostUsed(stats.getUsedCauses()));
         lm.sendString(requester, "stats-view-mosttype", mostUsedType);
 
         String mostKilledBy = Utils.prettyPrint(getMostUsed(stats.getDeathCauses()));
