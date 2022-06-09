@@ -85,6 +85,10 @@ public class PlayerStatsManager {
         save();
     }
 
+    public static PlayerStats getStats(UUID uuid) {
+        return allStats.get(uuid);
+    }
+
     //TODO: Save every x minutes
     public static void save() {
         for(UUID uuid : allStats.keySet()) {
