@@ -95,7 +95,7 @@ public class StatsCommand implements CommandExecutor {
         }
 
         double playerDeaths = stats.getPlayerDeaths();
-        double kd = playerDeaths != 0 ? stats.getPlayerKills() / playerDeaths : 1;
+        double kd = playerDeaths != 0 ? stats.getPlayerKills() / playerDeaths : stats.getPlayerKills();
         String kdString = lm.getString(requester, "stats-view-kd", String.valueOf(MathUtils.round(kd, 2)));
         String kdStringDetail = lm.getString(requester, "stats-view-kd-hover", String.valueOf(stats.getPlayerKills()), String.valueOf(stats.getPlayerDeaths()));
 
