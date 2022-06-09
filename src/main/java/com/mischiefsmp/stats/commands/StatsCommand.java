@@ -88,6 +88,28 @@ public class StatsCommand implements CommandExecutor {
                 lm.sendString(sender, "player-nf", username);
                 return true;
             }
+        } else if(args.length == 2) {
+            if(args[0].equals("reset")) {
+                if(!isAllowed(sender, "stats.reset-others"))
+                    return true;
+
+                String username = args[1];
+                UUID uuid;
+                Player p = Bukkit.getPlayer(username);
+                uuid = p != null ? p.getUniqueId() : MCUtils.getUserUUID(username);
+
+                if(uuid == null) {
+                    lm.sendString(sender, "player-nf", username);
+                    return true;
+                }
+
+                if(PlayerStatsManager.reset(uuid)) {
+                    lm.sendString(sender, "stats-reset-other", username);
+                } else {
+                    lm.sendString(sender, "stats-reset-nf", username);
+                }
+                return true;
+            }
         }
 
         lm.sendString(sender, "wrong-usage");
