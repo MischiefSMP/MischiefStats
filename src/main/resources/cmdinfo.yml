@@ -8,7 +8,7 @@ commands:
       usage: "/stats <playername>"
       permission: "stats.view.others"
       default: "op"
-    reset:
+    reset-self:
       usage: "/stats reset"
       permission: "stats.reset"
       default: "op"

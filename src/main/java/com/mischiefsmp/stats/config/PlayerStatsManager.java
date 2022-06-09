@@ -32,7 +32,6 @@ public class PlayerStatsManager {
 
     public static void addTotalDamage(Player player, ItemStack weapon, Double damage) {
         ensurePlayerStat(player);
-        System.out.println(Utils.checkIfAllowedWeapon(weapon));
         if (!Utils.checkIfAllowedCreative(player) || !Utils.checkIfAllowedWeapon(weapon))
             return;
 
@@ -94,7 +93,6 @@ public class PlayerStatsManager {
     }
 
     public static PlayerStats getStats(UUID uuid) {
-        ensurePlayerStat(uuid);
         return allStats.get(uuid);
     }
 

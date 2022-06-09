@@ -1,6 +1,7 @@
 no-perm: "You do not have the permission to run this command!"
 no-stats: "No stats collected for player %s!"
 no-console: "This command can only be run by players!"
+player-nf: "Player %s not found!"
 stats-view-title:         "Stats for %s"
 stats-view-kd:            " K/D: %s"
 stats-view-kd-hover:      " Kills: %s, Deaths: %s"

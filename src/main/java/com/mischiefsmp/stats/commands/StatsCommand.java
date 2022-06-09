@@ -11,6 +11,8 @@ import com.mischiefsmp.stats.config.PlayerStatsManager;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,6 +21,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class StatsCommand implements CommandExecutor {
     private final HashMap<String, CMDInfo> cmdInfo;
@@ -43,14 +46,51 @@ public class StatsCommand implements CommandExecutor {
 
             sendInfo((Player)sender, sender);
             return true;
+        } else if(args.length == 1) {
+            if(args[0].equals("reset")) {
+                // -> /stats reset
+                if(!isAllowed(sender, "stats.reset-self"))
+                    return true;
+                return true;
+            } else {
+                // -> /stats <playername>
+                if(!isAllowed(sender, "stats.view-others"))
+                    return true;
+
+                String username = args[0];
+                Player p = Bukkit.getPlayer(username);
+                if(p != null) {
+                    sendInfo(p, sender);
+                    return true;
+                }
+
+                UUID pUUID = MCUtils.getUserUUID(username);
+                if(pUUID != null) {
+                    OfflinePlayer pOffline = Bukkit.getOfflinePlayer(pUUID);
+                    sendInfo(pOffline, username, sender);
+                    return true;
+                }
+
+                lm.sendString(sender, "player-nf", username);
+                return true;
+            }
         }
         return true;
     }
 
+    private void sendInfo(OfflinePlayer player, String playerName, CommandSender requester) {
+        String name = player.getName() != null ? player.getName() : playerName;
+        sendInfo(player.getUniqueId(), name, requester);
+    }
+
     private void sendInfo(Player player, CommandSender requester) {
-        PlayerStats stats = PlayerStatsManager.getStats(player.getUniqueId());
+        sendInfo(player.getUniqueId(), player.getName(), requester);
+    }
+
+    private void sendInfo(UUID uuid, String playerName, CommandSender requester) {
+        PlayerStats stats = PlayerStatsManager.getStats(uuid);
         if(stats == null) {
-            lm.sendString(requester, "no-stats", player.getName());
+            lm.sendString(requester, "no-stats", playerName);
             return;
         }
 
@@ -59,7 +99,7 @@ public class StatsCommand implements CommandExecutor {
         String kdString = lm.getString(requester, "stats-view-kd", String.valueOf(MathUtils.round(kd, 2)));
         String kdStringDetail = lm.getString(requester, "stats-view-kd-hover", String.valueOf(stats.getPlayerKills()), String.valueOf(stats.getPlayerDeaths()));
 
-        lm.sendString(requester, "stats-view-title", player.getName());
+        lm.sendString(requester, "stats-view-title", playerName);
 
         TextComponent kdText = new TextComponent(kdString);
         kdText.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(kdStringDetail)));
