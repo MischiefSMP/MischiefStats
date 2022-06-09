@@ -34,10 +34,8 @@ public class StatsCommand implements CommandExecutor, TabCompleter {
             if(!isAllowed(sender, "stats.view-self"))
                 return true;
 
-            if(sender instanceof ConsoleCommandSender) {
-                sender.sendMessage(lm.getString("no-console"));
+            if(!isPlayer(sender))
                 return true;
-            }
 
             sendInfo((Player)sender, sender);
             return true;
@@ -47,10 +45,8 @@ public class StatsCommand implements CommandExecutor, TabCompleter {
                 if(!isAllowed(sender, "stats.reset-self"))
                     return true;
 
-                if(sender instanceof ConsoleCommandSender) {
-                    sender.sendMessage(lm.getString("no-console"));
+                if(!isPlayer(sender))
                     return true;
-                }
 
                 PlayerStatsManager.reset(((Player)sender).getUniqueId());
                 lm.sendString(sender, "stats-reset-self");
@@ -89,20 +85,16 @@ public class StatsCommand implements CommandExecutor, TabCompleter {
                     return true;
 
                 String username = args[1];
-                UUID uuid;
                 Player p = Bukkit.getPlayer(username);
-                uuid = p != null ? p.getUniqueId() : MCUtils.getUserUUID(username);
+                UUID uuid = p != null ? p.getUniqueId() : MCUtils.getUserUUID(username);
 
                 if(uuid == null) {
                     lm.sendString(sender, "player-nf", username);
                     return true;
                 }
 
-                if(PlayerStatsManager.reset(uuid)) {
-                    lm.sendString(sender, "stats-reset-other", username);
-                } else {
-                    lm.sendString(sender, "stats-reset-nf", username);
-                }
+                String resetMsg = PlayerStatsManager.reset(uuid) ? lm.getString(sender, "stats-reset-other", username) : lm.getString(sender, "stats-reset-nf", username);
+                sender.sendMessage(resetMsg);
                 return true;
             }
         }
@@ -203,6 +195,14 @@ public class StatsCommand implements CommandExecutor, TabCompleter {
             }
         }
         return item;
+    }
+
+    private boolean isPlayer(CommandSender sender) {
+        if(sender instanceof ConsoleCommandSender) {
+            sender.sendMessage(lm.getString("no-console"));
+            return false;
+        }
+        return true;
     }
 
     private boolean isAllowed(CommandSender sender, String id, boolean printOnDeny) {
