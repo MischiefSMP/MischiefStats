@@ -2,18 +2,17 @@ package com.mischiefsmp.stats;
 
 import com.mischiefsmp.core.LangManager;
 import com.mischiefsmp.core.LogManager;
-import com.mischiefsmp.core.cmdinfo.CMDInfo;
 import com.mischiefsmp.core.cmdinfo.CMDInfoManager;
 import com.mischiefsmp.core.utils.MCUtils;
+import com.mischiefsmp.stats.commands.StatsCommand;
 import com.mischiefsmp.stats.config.PluginConfig;
 import com.mischiefsmp.stats.events.EntityDamage;
 import com.mischiefsmp.stats.events.EntityDeath;
 import com.mischiefsmp.stats.events.PlayerDeath;
 import lombok.Getter;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.security.Permission;
-import java.util.HashMap;
 
 public class MischiefStats extends JavaPlugin {
     @Getter
@@ -39,6 +38,14 @@ public class MischiefStats extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
         getServer().getPluginManager().registerEvents(new EntityDamage(), this);
 
+        registerCommand("stats", new StatsCommand());
+
         MCUtils.registerPermissions(cmdInfoManager);
+    }
+
+    private void registerCommand(String name, CommandExecutor exec) {
+        PluginCommand c = getServer().getPluginCommand(name);
+        if(c != null)
+            c.setExecutor(exec);
     }
 }

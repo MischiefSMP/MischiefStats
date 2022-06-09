@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -15,9 +16,15 @@ public class PlayerStatsManager {
     private static final HashMap<UUID, PlayerStats> allStats = new HashMap<>();
     //TODO: create a config for the server, and log total things as well maybe?
 
-    private static void ensurePlayerStat(Player... players) {
-        for(Player player : players) {
-            UUID uuid = player.getUniqueId();
+    public static void ensurePlayerStat(Player... players) {
+        UUID[] uuids = new UUID[players.length];
+        for(int i = 0; i < players.length; i++)
+            uuids[i] = players[i].getUniqueId();
+        ensurePlayerStat(uuids);
+    }
+
+    private static void ensurePlayerStat(UUID... uuids) {
+        for(UUID uuid : uuids) {
             if (!allStats.containsKey(uuid))
                 allStats.put(uuid, new PlayerStats(MischiefStats.getInstance(), uuid));
         }
@@ -86,6 +93,7 @@ public class PlayerStatsManager {
     }
 
     public static PlayerStats getStats(UUID uuid) {
+        ensurePlayerStat(uuid);
         return allStats.get(uuid);
     }
 
