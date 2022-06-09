@@ -16,17 +16,17 @@ public class PlayerDeath implements Listener {
         Player killed = event.getEntity();
         Player killer = event.getEntity().getKiller();
 
-        if(killer == null) {
-            PlayerStatsManager.addNonPlayerDeath(killed, event.getEntity().getLastDamageCause());
-            return;
-        }
-
         EntityDamageEvent cause = killed.getLastDamageCause();
         if(cause == null)
             return;
 
-        if(killed == killer) {
+        if(killed == killer || cause.getCause() == EntityDamageEvent.DamageCause.SUICIDE) {
             PlayerStatsManager.addSuicideStat(killed, cause);
+            return;
+        }
+
+        if(killer == null) {
+            PlayerStatsManager.addNonPlayerDeath(killed, cause);
             return;
         }
 
