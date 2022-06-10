@@ -3,7 +3,7 @@ version: 0.0.1
 author: sven@wollinger.email
 main: com.mischiefsmp.stats.MischiefStats
 api-version: 1.18
-depend: ["MischiefCore"]
+softdepend: ["MischiefCore"]
 commands:
   stats:
     description: View stats
